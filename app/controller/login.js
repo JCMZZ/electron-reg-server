@@ -5,7 +5,9 @@ const Controller = require('egg').Controller;
 class LoginController extends Controller {
   async index() {
     const { ctx } = this;
-    ctx.body = 'hi, egg';
+    let content = await ctx.service.login.find();
+    console.log(content)
+    ctx.body = JSON.stringify(content);
   }
 }
 

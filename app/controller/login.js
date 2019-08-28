@@ -4,9 +4,8 @@ const Controller = require('egg').Controller;
 
 class LoginController extends Controller {
   async index() {
-    const { ctx } = this;
-    let content = await ctx.service.login.find();
-    console.log(content)
+    const { ctx, service } = this;
+    let content = await service.login.find();
     ctx.body = JSON.stringify(content);
   }
 }

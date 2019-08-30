@@ -9,7 +9,7 @@ class RegisterController extends Controller {
     try {
       ctx.validate({
         email: {type: 'email', allowEmpty: false},
-        pwd: {type: 'password', allowEmpty: false, max:16, min: 8}
+        pwd: {type: 'password', allowEmpty: false, max:16, min: 6}
       });
       await service.register.createUser();
     } catch (err) {

@@ -16,4 +16,6 @@ exports.mysql = {
     app: true,
     // 是否加载到 agent 上，默认关闭
     agent: false,
+    /* 修改查询时间格式问题 */
+    timezone: "08:00"
 };

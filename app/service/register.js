@@ -1,5 +1,4 @@
 const Service = require('egg').Service;
-const crypto = require('crypto');
 class RegisterService extends Service {
   async createUser() {
     const { ctx, app } = this;
@@ -8,7 +7,7 @@ class RegisterService extends Service {
       ctx.success = { 
         result: await app.mysql.insert('reg_user', { 
           email, 
-          pwd: crypto.createHash('md5').update(pwd).digest('hex')
+          pwd: new app.mysql.literals.Literal(`md5(${pwd})`)
         }), 
         message: 'registered successfully！'
       };

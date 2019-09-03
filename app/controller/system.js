@@ -2,11 +2,11 @@
 
 const Controller = require('egg').Controller;
 
-class HomeController extends Controller {
-  async index() {
+class SystemController extends Controller {
+  async log() {
     const { ctx } = this;
     ctx.success = {result: { session: ctx.session, token: ctx.helper.getCookie()}}
   }
 }
 
-module.exports = HomeController;
+module.exports = SystemController;

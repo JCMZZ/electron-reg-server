@@ -8,7 +8,7 @@ class LoginController extends Controller {
     try {
       ctx.validate({
         email: {type: 'email', allowEmpty: false},
-        pwd: {type: 'password', allowEmpty: false}
+        pwd: {type: 'password', allowEmpty: false, max: 32}
       });
       /**
        * 账户是否存在

@@ -1,14 +1,38 @@
-module.exports = (options, app) => {
-    return async (ctx, next) => {
-      let { helper } = ctx;
+module.exports = (authCode) => {
+  return async (ctx, next) => {
+    let { helper } = ctx;
+    if (authCode) {
+      /* 是否ajax请求 */
+      let isAjax = Boolean(ctx.get('x-requested-with'));
       let cookie = helper.getCookie();
-      if(!cookie) {
-        ctx.fail = {message: 'Please login first！'}
+      /**
+       * 未登陆
+       */
+      if (!cookie) {
+        ctx.fail = {
+          message: 'Please login first！',
+          code: 4011
+        }
         return
       }
-      let {user, roles, navs} = ctx.session[helper.crypto(cookie)];
-      console.log('经过中间件')
-      // ctx.redirect('/login');   // 让用户去登录
-      await next();
-    };
+      let { navs } = ctx.session[helper.crypto(cookie)];
+      let opers = navs.reduce((opers, nav) => {
+        nav.pages.forEach(page => {
+          opers = opers.concat(page.opers.map(oper => oper.oper_code))
+        })
+        return opers
+      }, []);
+      /**
+       * 未授权
+       */
+      if (!opers.includes(authCode)) {
+        ctx.fail = {
+          message: 'No operation permission！',
+          code: 4014
+        }
+        return
+      }
+    }
+    await next();
   };
+};

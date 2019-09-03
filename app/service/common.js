@@ -46,16 +46,33 @@ class CommonService extends Service {
                 rp.permission_id = o.oper_code
                     AND rp.permission_type = 'oper'
                     AND rp.role_id IN (?)`, [role_id]);
-        
         let navs = [];
         for(var item of pages){
             let {page_code, title, page_router, nav_code, nav_name} = item;
             let curnav = navs.find(n=>n.nav_code === nav_code);
-            let opers = roles.filter(role=>role.page_code === page_code);
+            let opers = roles.filter(role=>role.page_code === page_code)
+                             .map(({oper_code,oper_desc})=>({oper_code,oper_desc}));
             curnav || (curnav={nav_code, nav_name, pages: []},navs.push(curnav));
             curnav.pages.push({page_code, title, page_router, opers});
         }
         return navs;
     }
+    /**
+     * 插入系统操作日志
+     */
+    async log({module='暂无', desc='未知操作'}) {
+        let { app, ctx } = this;
+        let cookie = ctx.helper.getCookie();
+        let { user } = ctx.session[ctx.helper.crypto(cookie)];
+        let create_time = ctx.helper.dbTime('yy-mm-dd hh:mm:ss');
+        return await app.mysql.insert('reg_log', {
+            nickname: user.nickname,
+            email: user.email,
+            ip: ctx.ip,
+            module,
+            create_time,
+            log_desc: `${user.nickname}[${create_time}]${desc}`
+        });
+    } 
 }
 module.exports = CommonService

@@ -27,6 +27,10 @@ class LoginController extends Controller {
         let navs = await service.common.navs(roles.map(r=>r.role_id).join(','));
         ctx.session[ctx.helper.crypto(user.email)] = {user, roles, navs};
         ctx.helper.setCookie(user.email);
+        service.common.log({
+          module: 'system',
+          desc: '登陆系统'
+        });
         ctx.success = {result: {user, roles, navs}};
       } catch (err) {
         ctx.fail = {result: err, message: 'The password is incorrect！'};

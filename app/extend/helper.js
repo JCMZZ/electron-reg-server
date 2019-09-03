@@ -37,5 +37,30 @@ module.exports = {
             code: 422,
             message
         }
+    },
+    /**
+     * 获取格式化后时间
+     * @param {String} formt 格式
+     * @param {Date} date 时间
+     */
+    dbTime(formt, date) {
+        date = date ? new Date(date) : new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        month < 10 && (month = '0' + month);
+        let day = date.getDate();
+        day < 10 && (day = '0' + day);
+        let hour = date.getHours();
+        hour < 10 && (hour = '0' + hour);
+        let minutes = date.getMinutes();
+        minutes < 10 && (minutes = '0' + minutes);
+        let seconds = date.getSeconds();
+        seconds < 10 && (seconds = '0' + seconds);
+        return formt.replace(/yy/i, year)
+            .replace(/mm/i, month)
+            .replace(/dd/i, day)
+            .replace(/hh/i, hour)
+            .replace(/:mm/i, ':' + minutes)
+            .replace(/:ss/i, ':' + seconds);
     }
 }

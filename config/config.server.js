@@ -8,7 +8,7 @@ module.exports = {
     },
     security: {
         csrf: {
-            ignore: '/user/create'
+            ignore: ['/user/create', '/user/login']
         }
     }
 };

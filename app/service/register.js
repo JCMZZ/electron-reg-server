@@ -4,11 +4,14 @@ class RegisterService extends Service {
     const { ctx, app } = this;
     let { email, pwd } = ctx.request.body;
     try {
+      let result = await app.mysql.insert('reg_user', { 
+        email, 
+        pwd: new app.mysql.literals.Literal(`md5('${pwd}')`)
+      });
+      if(!result.insertId) {
+        throw Error('fail to register');
+      }
       ctx.success = { 
-        result: await app.mysql.insert('reg_user', { 
-          email, 
-          pwd: new app.mysql.literals.Literal(`md5(${pwd})`)
-        }), 
         message: 'registered successfully！'
       };
     } catch (error) {

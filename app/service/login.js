@@ -8,7 +8,7 @@ class LoginService extends Service {
     const { app } = this;
     return await app.mysql.get('reg_user', {
       email,
-      pwd: new app.mysql.literals.Literal(`md5(${pwd})`)
+      pwd: new app.mysql.literals.Literal(`md5('${pwd}')`)
     });
   }
   /**

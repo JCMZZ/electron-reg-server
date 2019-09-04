@@ -9,7 +9,7 @@ class RegisterController extends Controller {
     try {
       ctx.validate({
         email: {type: 'email', allowEmpty: false},
-        pwd: {type: 'password', allowEmpty: false, max:16, min: 6}
+        pwd: {type: 'password', allowEmpty: false, max: 32, min: 32 }
       });
       let isRegister = await service.login.validateAccount(ctx.request.body.email);
       if(isRegister) {

@@ -29,9 +29,7 @@ module.exports = appInfo => {
     },
     session: {
       key: 'REG_SESS',
-      maxAge: serverConfig.COOKIE.maxAge, 
-      httpOnly: false,
-      encrypt: true,
+      ...serverConfig.COOKIE,
       // renew: true
     }
   };

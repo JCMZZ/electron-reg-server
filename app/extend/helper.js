@@ -62,5 +62,15 @@ module.exports = {
             .replace(/hh/i, hour)
             .replace(/:mm/i, ':' + minutes)
             .replace(/:ss/i, ':' + seconds);
+    },
+    /**
+     * 检查变量是否为空类型值
+     * @param {Any} variable 
+     */
+    empty(variable) {
+        if(variable === null || variable === undefined || variable === '') {
+            return true;
+        }
+        return false;
     }
 }

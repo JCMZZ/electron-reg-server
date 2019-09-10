@@ -1,9 +1,8 @@
+const { empty } = require('../extend/helper');
 module.exports = app => {
-    app.validator.addRule('json', (rule, value) => {
-        try {
-            console.log(JSON.parse(value));
-        } catch (err) {
-            return 'must be json string';
+    app.validator.addRule('required', (rule, value) => {
+        if (empty(value)) {
+            return rule.message;
         }
     });
 }

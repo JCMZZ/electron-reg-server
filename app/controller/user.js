@@ -14,11 +14,12 @@ class UserController extends Controller {
       });
       try {
         let { update_time, state, pwd, ...user} = await service.user.info(ctx.request.body.userid);
+        let labels = await service.user.label(ctx.request.body.userid);
         service.common.log({
           module: 'user',
           desc: '查看账号信息'
         });
-        ctx.success = {result: user};
+        ctx.success = {result: { user, labels }};
       } catch (err) {
         ctx.fail = {result: err, message: 'The user does not exist！'};
       }

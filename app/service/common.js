@@ -26,6 +26,7 @@ class CommonService extends Service {
                 p.page_code,
                 p.title,
                 p.page_router,
+                p.page_level,
                 n.nav_name,
                 n.nav_code
             FROM
@@ -48,22 +49,24 @@ class CommonService extends Service {
                     AND rp.role_id IN (?)`, [role_id]);
         let navs = [];
         for(var item of pages){
-            let {page_code, title, page_router, nav_code, nav_name} = item;
+            let {page_code, title, page_router, page_level, nav_code, nav_name} = item;
             let curnav = navs.find(n=>n.nav_code === nav_code);
             let opers = roles.filter(role=>role.page_code === page_code)
                              .map(({oper_code,oper_desc})=>({oper_code,oper_desc}));
             curnav || (curnav={nav_code, nav_name, pages: []},navs.push(curnav));
-            curnav.pages.push({page_code, title, page_router, opers});
+            curnav.pages.push({page_code, title, page_router, page_level, opers});
         }
         return navs;
     }
     /**
      * 插入系统操作日志
      */
-    async log({module='暂无', desc='未知操作'}) {
+    async log({module='暂无', desc='未知操作'}, user) {
         let { app, ctx } = this;
         let cookie = ctx.helper.getCookie();
-        let { user } = ctx.session[ctx.helper.crypto(cookie)];
+        if(!user) {
+            user = ctx.session[ctx.helper.crypto(cookie)].user;
+        }
         let create_time = ctx.helper.dbTime('yy-mm-dd hh:mm:ss');
         return await app.mysql.insert('reg_log', {
             nickname: user.nickname,

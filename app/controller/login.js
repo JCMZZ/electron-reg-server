@@ -30,7 +30,7 @@ class LoginController extends Controller {
         service.common.log({
           module: 'system',
           desc: '登陆系统'
-        });
+        }, user);
         ctx.success = {result: {user, roles, navs}};
       } catch (err) {
         ctx.fail = {result: err, message: 'The password is incorrect！'};

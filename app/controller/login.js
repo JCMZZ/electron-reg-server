@@ -25,7 +25,7 @@ class LoginController extends Controller {
         let { update_time, create_time, state, pwd, ...user} = await service.login.validateUser(ctx.request.body);
         let roles = await service.common.roles(user.user_id);
         let navs = await service.common.navs(roles.map(r=>r.role_id).join(','));
-        ctx.session[ctx.helper.crypto(user.email)] = {user, roles, navs};
+        // ctx.session[ctx.helper.crypto(user.email)] = {user, roles, navs};
         ctx.helper.setCookie(user.email);
         service.common.log({
           module: 'system',

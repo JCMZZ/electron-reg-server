@@ -3,7 +3,7 @@ module.exports = (authCode) => {
     let { helper } = ctx;
     if (authCode) {
       /* 是否ajax请求 */
-      let isAjax = Boolean(ctx.get('x-requested-with'));
+      let isAjax = Boolean(ctx.get('X-Requested-With'));
       let cookie = helper.getCookie();
       /**
        * 未登陆
@@ -15,11 +15,11 @@ module.exports = (authCode) => {
         }
         return
       }
-      let { navs } = ctx.session[helper.crypto(cookie)];
+      let { navs } = await helper.Rget(helper.crypto(cookie));
       let opers = navs.reduce((opers, nav) => {
         nav.pages.forEach(page => {
           opers = opers.concat(page.opers.map(oper => oper.oper_code))
-        })
+        });
         return opers
       }, []);
       /**

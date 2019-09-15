@@ -9,3 +9,11 @@ exports.validate = {
   enable: true,
   package: 'egg-validate',
 };
+exports.redis = {
+  enable: true,
+  package: 'egg-redis',
+};
+exports.sessionRedis = {
+  enable: true,
+  package: 'egg-session-redis',
+};

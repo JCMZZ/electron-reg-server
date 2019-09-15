@@ -65,7 +65,7 @@ class CommonService extends Service {
         let { app, ctx } = this;
         let cookie = ctx.helper.getCookie();
         if(!user) {
-            user = ctx.session[ctx.helper.crypto(cookie)].user;
+            user = ctx.helper.Rget(ctx.helper.crypto(cookie)).user;
         }
         let create_time = ctx.helper.dbTime('yy-mm-dd hh:mm:ss');
         return await app.mysql.insert('reg_log', {

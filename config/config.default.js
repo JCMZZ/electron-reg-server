@@ -2,6 +2,7 @@
 
 'use strict';
 const { mysql } = require('./config.mysql');
+const { redis } = require('./config.redis');
 const serverConfig = require('./config.server');
 const middlewareConfig = require('./config.middleware');
 /**
@@ -13,7 +14,8 @@ module.exports = appInfo => {
    * @type {Egg.EggAppConfig}
    **/
   const config = exports = {
-    mysql
+    mysql,
+    redis
   };
 
   // use for cookie sign key, should change to your own and keep security

@@ -72,5 +72,31 @@ module.exports = {
             return true;
         }
         return false;
+    },
+    /**
+     * Redis set command 
+     * @param {String} key 
+     * @param {String} value 
+     */
+    async Rset(key, value) {
+        let { app } = this;
+        let json = JSON.stringify(value);
+        if (typeof json !== 'string') {
+            return false;
+        } 
+        let result = await app.redis.set(key, json);
+        if (result !== "OK") {
+            return false;
+        }
+        return true;
+    },
+    /**
+     * Redis get command 
+     * @param {String} key 
+     */
+    async Rget(key) {
+        let { app } = this;
+        let result = await app.redis.get(key);
+        return JSON.parse(result);
     }
 }
